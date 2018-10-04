@@ -1,0 +1,38 @@
+.page-wrapper {
+    position: relative;
+    width: 95%;
+    margin: auto;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.login-form {
+    max-width: 300px;
+    margin: auto;
+}
+
+.forgot-form {
+    width: 300px;
+    margin: auto;
+}
+
+.login-form-forgot {
+    float: right;
+}
+
+.login-form-button {
+    width: 100%;
+}
+
+.registration-form {
+    width: 600px;
+    margin: auto;
+}
+
+
+.change-password-form{
+     width: 400px;
+     margin: auto;
+}
