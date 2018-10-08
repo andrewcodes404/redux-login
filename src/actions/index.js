@@ -6,23 +6,26 @@ export const FETCH_DATA = 'FETCH_DATA'
 export const LOGOUT = 'LOGOUT'
 export const GET_USER_DATA = 'GET_USER_DATA'
 
-export function logInAC(snapshot) {
+export function logInAC(snapshot, emailVerified) {
 
-    // let contentArray = [];
-    // if (snapshot.userContent) {
-    //     const contentObj = snapshot.userContent
-    //     Object.keys(contentObj).map((key) => {
-    //         contentArray.push(contentObj[key].url)
-    //         return contentArray
-    //     })
-    // }
+    let contentArray = [];
+    
+    if (snapshot.userContent) {
+        
+        const contentObj = snapshot.userContent
+        Object.keys(contentObj).map((key) => {
+            contentArray.push(contentObj[key])
+            return contentArray
+        })
+    }
 
     //make data ob with images array
     const data = {
         id: snapshot.id,
         name: snapshot.username,
+        emailVerified: emailVerified,
         email: snapshot.email,
-        // userContent: contentArray
+        userContent: contentArray
     }
 
     return {
@@ -35,4 +38,9 @@ export function logOutAC() {
     return {
         type: LOGOUT
     }
+}
+
+
+export function uploadUserContentAC () {
+
 }

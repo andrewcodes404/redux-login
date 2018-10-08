@@ -4,7 +4,7 @@ import { db } from './firebase';
 // User API
 
 ///SET//////SET//////SET//////SET//////SET//////SET//////SET///
-export const doCreateUser = (id, username, email) =>{
+export const doCreateUser = (id, username, email) => {
     db.ref(`users/${id}`).set({
         id,
         username,
@@ -12,32 +12,44 @@ export const doCreateUser = (id, username, email) =>{
     });
 
 }
-    
-    
+
+
 // export const doUploadUrl = (id, url, filename) =>
 //     db.ref(`users/${id}/images`).set({
 //         url,
 //         filename,
 //     });
 
-export const doUploadUrl = (uid, url, filename) => {
+export const setUserContent = (uid, text) => {
+    var date = new Date()
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const dt = date.getDate();
+    const time = date.getTime()
+    var createdAt = `${year}${month}${dt}${time}`
     // A post entry.
     var postData = {
         uid: uid,
-        filename: filename,
-        url: url
+        text: text,
+        created: createdAt,
     };
 
+
     // Get a key for a new Post.
-    var newPostKey = db.ref(`users/${uid}`).child('images').push().key;
+    // var newPostKey = db.ref(`users/${uid}`).child('userContent').push().key;
 
     // Write the new post's data simultaneously in the posts list and the user's post list.
-    var updates = {};
-    updates['/images/' + newPostKey] = postData;
+    // var updates = {};
+    // updates['/images/' + newPostKey] = postData;
     // updates['/user-photo/' + uid + '/' + newPostKey] = postData;
+    console.log("uid from firedb : ", uid);
+    console.log("postData from firedb : ", postData);
+    return db.ref(`users/${uid}/userContent/${createdAt}/`).set(postData);
 
-    return db.ref(`users/${uid}`).update(updates);
 }
+
+
+
 
 
 ///ONCE//////ONCE//////ONCE//////ONCE//////ONCE//////ONCE//////ONCE///
