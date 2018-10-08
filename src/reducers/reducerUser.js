@@ -2,20 +2,21 @@ import { LOGIN, LOGOUT } from '../actions'
 
 //set state to {object} to begin with
 // user: true
-export default function (state = { loggedIn: false, name: "", email: "", images: [] }, action) {
+// loggedIn: false, name: "", email: "", userContent: []
+export default function (state = {}, action) {
     switch (action.type) {
 
         case LOGIN:
-            return {
-                ...state,
+            const newState = {
                 loggedIn: true,
                 id: action.payload.id,
                 name: action.payload.name,
                 email: action.payload.email,
-                images: action.payload.images
-            }
+                emailVerified: action.payload.emailVerified,
+                userContent: action.payload.userContent}
+            return newState
         case LOGOUT:
-            return { loggedIn: false }
+            return {}
         default:
             return state;
     }

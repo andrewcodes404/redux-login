@@ -14,7 +14,7 @@ const LoggedIn = (props) => (
                 <Link to="/account" className="mr2"><Icon type="user" />account - {props.user}</Link>
             </Menu.Item>
             <Menu.Item>
-                <Link to="/upload" className="mr2"><Icon type="upload" />upload</Link>
+                <Link to="/upload" className="mr2"><Icon type="upload" />Add User Content</Link>
             </Menu.Item>
             <Menu.Item>
                 <Button onClick={props.logOut}>Log Out</Button>

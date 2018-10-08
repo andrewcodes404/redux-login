@@ -12,8 +12,6 @@ import { db } from '../firebase';
 import { firebase } from '../firebase';
 
 
-
-
 //Pages
 import Nav from './Nav';
 
@@ -22,21 +20,31 @@ import Account from "./Account";
 import Login from "./Login";
 import Register from "./Register";
 import Home from "./Home";
+import Upload from "./Upload";
 
 
 class App extends React.Component {
 
     componentDidMount() {
-
         //Check if user is logged in, a fn where we can check if the object is true
         firebase.auth.onAuthStateChanged(user => {
+
             if (user) {
-                //grab the user uid
+                // console.log("user : ", user);
+                
                 const id = user.uid;
-                //with the authenticated ID we can acces that users data from the db and send it to the redux store    
+
+                // TURNED THIS OFF FOR DEV
+                // const emailVerified = user.emailVerifiedandreew
+                // AND SET IT MANUALLY TO TRUE
+
+                const emailVerified = true
                 db.onceGetUser(id).then((snapshot) => {
-                    this.props.logInAC(snapshot.val())
+                    // console.log("snapshot.val() : ", snapshot.val());
+                    this.props.logInAC(snapshot.val(), emailVerified)
                 })
+
+                //with the authenticated ID we can acces that users data from the db and send it to the redux store    
                 // if not call the LogoutAC to blank the store    
             } else {
                 this.props.logOutAC()
@@ -53,6 +61,7 @@ class App extends React.Component {
                     <Nav />
                     <div className="page-wrapper">
                         <Switch>
+                            <Route path="/upload" component={Upload} />
                             <Route path="/forgot" component={Forgot} />
                             <Route exact path="/account" component={Account} />
                             <Route exact path="/login" component={Login} />

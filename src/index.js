@@ -11,6 +11,7 @@ import thunk from 'redux-thunk';
 // style
 import 'antd/dist/antd.css';
 import './style/custom.css';
+import 'react-quill/dist/quill.snow.css'
 
 import reducers from './reducers'
 import App from './components/App'

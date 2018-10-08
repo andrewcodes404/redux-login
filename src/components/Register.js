@@ -1,6 +1,7 @@
 import React from 'react';
 import { auth, db } from '../firebase';
-import { firebase } from '../firebase';
+// import { firebase } from '../firebase';
+import { connect } from 'react-redux'
 
 //style
 import { Form, Input, Tooltip, Icon, Checkbox, Button, } from 'antd';
@@ -8,34 +9,63 @@ const FormItem = Form.Item;
 
 class Register extends React.Component {
 
+
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.user.loggedIn !== prevProps.user.loggedIn) {
+            this.props.history.push('/')
+        }
+    }
+
     registerUser = (values) => {
 
         const email = values.email
         const password = values.password
-        const username = values.username
+        const username = values.username.substr(0, 1).toUpperCase() + values.username.substr(1);
+
+
+                    // let nameFromEmail = user.email.substring(0, user.email.indexOf("@"));
+                    // nameFromEmail = nameFromEmail
 
         auth.doCreateUserWithEmailAndPassword(email, password)
             .then(authUser => {
                 console.log("authUser = ", authUser);
                 db.doCreateUser(authUser.user.uid, username, email)
-                    .catch(error => {
-                        console.log("error from create user  🙍: ", error);
+
+                
+                authUser.user.updateProfile({
+                    displayName: values.username,
+                }).then(function () {
+                    // Email sent.
+                    console.log('display name updated sent')
+                    authUser.user.sendEmailVerification().then(function () {
+                        // Email sent.
+                        console.log('email verification sent sent');
+
+                    }).catch(function (error) {
+                        // An error happened.
+                        console.log("email error : ", error);
                     });
-            })
-            .catch(error => {
-                console.log("error from register user 💁  : ", error);
+                }).catch(function (error) {
+                    // An error happened.
+                    console.log("update user error : ", error);
+                });
+
+
+            }).catch(error => {
+                console.log("error from doCreateUserWithEmailAndPassword = ", error);
             })
 
-        firebase.auth().currentUser.sendEmailVerification()
-            .then(function () {
-                // Verification email sent.
-            })
-            .catch(function (error) {
-                // Error occurred. Inspect error.code.
-            })
-         
 
-            .then(this.props.history.push('/account'));
+        // user.updateProfile({
+        //     displayName: nameFromEmail,
+        // }).then(function () {
+        //     // Email sent.
+        //     console.log('display name updated sent');
+        // }).catch(function (error) {
+        //     // An error happened.
+        //     console.log("update user error : ", error);
+        // });
     }
 
     state = {
@@ -196,4 +226,10 @@ class Register extends React.Component {
 
 const WrappedRegistrationForm = Form.create()(Register);
 
-export default WrappedRegistrationForm;
+function mapStateToProps(state) {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(WrappedRegistrationForm)
